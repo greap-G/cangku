@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>欢迎登录</title>
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/style.css">
+<script type="text/javascript" src="js/axios.js"></script>
+<script type="text/javascript">
+ window.onload=function(){
+   var login=document.getElementById("login");
+   var login_bt=document.getElementById("login_bt");
+   var user_tips=document.getElementById("user_tips");
+   var login_success=document.getElementById("login_success");
+   var userName=document.getElementById("userName");
+   var password=document.getElementById("password");
+   var login_out=document.getElementById("login_out");
+   var tips=document.getElementById("tips");
+   //保证刷新或已经登录成功，关闭浏览器后，未超时，再次打开login.html,直接进入登录状态
+   var jwt=localStorage.getItem("jwt");
+   if(jwt){
+	  //设置axios默认请求头信息，添加要发送的jwt
+	  axios.defaults.headers.common['X-token'] = jwt; 
+	  axios.get("check.php")
+	  .then(function(res){
+		  if(res.data.result=="success"){
+			        login.style.display="none";
+					login_success.style.display="block"; 
+					user_tips.innerText=res.data.info.data.userName; 
+		   }else{
+			   //如果修改Application中修改jwt的值，模拟仿造jwt，发送请求，那么提示
+			   //演示过程: 先登录成功，关闭浏览器，修改jwt,返回打开login.html，jwt自动发送给服务器
+			   //服务器验证jwt失败，返回failed 和token验证失败信息
+			     login.style.display="block";
+				 login_success.style.display="none";
+				 tips.innerText=res.data.msg;   
+		   } 
+      }) 
+   }
+   
+   
+   
+   //点击登录按钮，进行登录操作
+   login_bt.onclick=function(){
+	var params = new URLSearchParams();//创建URLSearchParams对象
+	var userNameData=userName.value;
+	var passwordData=password.value;
+    params.append('userName', userNameData);//添加键值对
+    params.append('password', passwordData);  
+	//userName=tom&password=123
+	//发送ajax请求
+	axios.post("check.php?action=login",params)
+	.then(function(res){//res.data部分才是，服务器返回的json
+	      console.log("res",res);
+		  if(res.data.result=="success"){
+			  // localStorage.setItem('jwt', res.data.jwt);
+			  axios.defaults.headers.common['X-token'] = res.data.jwt;
+			  axios.get("check.php")
+			  .then(function(res){
+				  if(res.data.result=="success"){
+					login.style.display="none";
+					login_success.style.display="block"; 
+					user_tips.innerText=res.data.info.data.userName;
+				  }else{
+					 login.style.display="block";
+				     login_success.style.display="none";
+				     tips.innerText=res.data.msg;   
+				   }
+			   })
+			   .catch(function(e){
+				    alert("axios.get"+e.message);
+				})
+			     
+	       }else{
+			   tips.innerText=res.data.msg;
+			   }
+     })
+	 .catch(function(e){
+	   alert("axios.post"+e.message);	 
+	 })
+   };	 
+   login_out.onclick=function(){
+	    localStorage.removeItem("jwt");  
+		login.style.display="block";
+		login_success.style.display="none"; 
+		password.value="";
+		userName.value="";
+		userName.focus();
+   }
+   userName.onfocus=password.onfocus=function(){
+	    tips.innerText="";  
+	 };
+   
+ }
+</script>
+</head>
+
+<body>
+  <div id="container">
+	  <div id="login">\
+	  <h3>管理员登录</h3>
+	     <label>用户名:</label>
+	     <input type="text" id="userName"><br>
+	     <label>密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+	     <input type="password" id="password"><br>
+	     <div id="tips"></div>
+	     <input type="button" id="login_bt" value="登录">
+	  </div>  
+	  <div id="login_success" style="display: none;">
+	       欢迎<span id="user_tips"></span>，进入管理系统!
+	       <a id="login_out" href="javascript:;">注销</a>
+	  </div>
+  </div>
+</body>
+</html>

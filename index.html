@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>留言板首页</title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<link rel="stylesheet" href="css/style.css">
+		<script src="js/jquery-1.11.0.min.js"></script>
+		<script>
+			$(function(){
+				// 生成头像对应的option 
+				var facestr="";
+				for(var i=1;i<42;i++){
+					facestr+='<option value="'+i+'.gif">'+i+'.gif</option>';
+				}
+				$("#face").html(facestr).change(function(){
+					var _this=$(this);
+					console.log(_this);
+					$("#img1").attr("src","img/face/"+_this.val());
+				})
+				
+				// 总记录数
+				var rescount=0;
+				// 总页数
+				var pagecount=1;
+				//页码
+				var page=1;
+				// 初始化总记录数和总页数-- 从后台获得总记录数,计算总页数 rscount.php 提供记录接口
+				$.ajax({
+					url:"rscount.php",
+					type:"post",
+					dataType:"json",
+					success:function(data){
+						rscournt=data.recount;
+						pagecount=Math.ceil(rescount/5);
+					}
+				});
+				// 页面初始化,显示已经经过授权的留言
+				$.ajax({
+					url:"message.php",
+					type:"post",
+					data:{page:page},
+					dataType:"json",
+					cache:false,
+					success:function(data){
+						
+					}
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<!-- 遮罩层 -->
+		<div id="mask"></div>
+		<!-- 样式没写 -->
+		<div id="message" style="">
+			<h2>发布留言:</h2>
+			昵称:
+			<input type="text" id="author">
+			<select id="face">
+					
+			</select>
+			<img src="img/face/1.gif" alt="" id="img1" width="30" />
+			<br>
+			内容: <br>
+			<input type="button" class="btn btn-default" id="leaveBtn" value="发布留言">
+			<input type="button" class="btn btn-default" id="cannel" value="取消">
+		</div>
+		<div id="content">
+			<a href="#">发表留言</a>
+			<h3>青春色彩留言板</h3>
+			<table class="table table-hover">
+			 
+			</table>
+			<div id="page">
+				<a href="javascript:;" class="btn btn-info">上一页</a>
+				<a href="javascript:;" class="btn btn-info">下一页</a>
+			</div>
+			<a href="admin/login.html"></a>
+		</div>
+	</body>
+</html>

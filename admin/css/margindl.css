@@ -1,0 +1,59 @@
+	*{
+			margin: 0px;
+			padding: 0px;
+		}
+		body{
+			background:rgb(0,22,22,0.3);
+			font-size: 12px;
+		}
+		#container{
+			width: 200px;
+			height: 240px;
+			margin:100px auto;
+			border: 1px solid #990099;
+		}
+		#container div,button{
+			margin-top: 20px;
+			border: 1px solid #990099;
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+		#container div input{
+			border: none;
+			background: transparent;
+			outline: none;
+		}
+		button{
+			width: 75px;
+			height: 25px;
+			border-radius: 40px;
+			background: transparent;
+			cursor: pointer;
+			margin-left: 25%;
+			color: #990099;
+			outline: none;
+		}
+	.icon-unlocked:before {
+	  content: "\1f512";
+	  width: 20px;
+	  display: inline-block;
+	}
+	.icon-user:before {
+	  content: "\2763";
+	 width: 20px;
+	 display: inline-block;
+	}
+	.icon-key:before {
+	  content: "\1f5dd";
+	  width: 20px;
+	  display: inline-block;
+	}
+	p{
+		margin-top: 30px;
+		margin-left: 10px;
+		color: #444;
+	}
+	h3{
+		color: #fff;
+		margin-left: 25%;
+	}

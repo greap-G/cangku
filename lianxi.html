@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function runAsync(){
+            return new Promise((resovle,reject)=>{
+                console.log("调用匿名函数");
+                //模拟异步
+                setTimeout(()=>{
+                    console.log("resolve成功回调函数");
+                    resovle("就是我们的数据");//resolve(实参) 实参就是我们的数据
+                },2000)
+         })
+        }
+      console.log(runAsync());
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

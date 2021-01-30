@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>管理员登录</title>
+	<link rel="stylesheet" href="css/margindl.css">
+	<script src="js/jquery-1.11.2.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$("userName").on(blur,function(){
+				$get(
+				"marcheck.php",
+				"",
+				function(data){
+					// 成功回调函数
+				},
+				"json"
+				)
+			})
+		})
+	</script>
+</head>
+<body>
+	<div id="container">
+		<h3>管理员登录</h3>
+		<div><span class="icon-user"></span><input type="text" placeholder="admin" id="userName"></div>
+		<div><span class="icon-unlocked"></span><input type="password" placeholder="密码" id="password"></div>
+		<div><span class="icon-key"></span><input type="text" maxlength="4" placeholder="验证码"></div>
+		<button type="button">登录</button>
+		<p>		欢迎管理员登录</p>
+	</div>
+</body>
+</html>
